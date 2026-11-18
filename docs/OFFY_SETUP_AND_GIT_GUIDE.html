@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OFFY Setup & Git Configuration Guide</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+  }
+  h1 {
+    color: #0f172a;
+    font-size: 24px;
+    border-bottom: 2px solid #0284c7;
+    padding-bottom: 8px;
+    margin-top: 0;
+  }
+  h2 {
+    color: #0f172a;
+    font-size: 17px;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 4px;
+    margin-top: 24px;
+    page-break-after: avoid;
+  }
+  h3 {
+    color: #334155;
+    font-size: 14.5px;
+    margin-top: 18px;
+    page-break-after: avoid;
+  }
+  h4 {
+    color: #475569;
+    font-size: 13px;
+    margin-top: 14px;
+    page-break-after: avoid;
+  }
+  pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+    overflow-x: hidden !important;
+    page-break-inside: avoid;
+    font-family: "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    margin: 8px 0 12px 0;
+  }
+  code {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+    font-family: "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+  ul, ol {
+    padding-left: 22px;
+    margin: 6px 0 10px 0;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+<h1>OFFY Setup &amp; Git Configuration Guide</h1>
+<p>A simple, step-by-step guide to installing the <strong>OFFY Connector</strong> in <strong>Odoo 19 Enterprise</strong>, pushing code updates to Git, understanding the folder layout, and configuring your Odoo server.</p>
+<hr />
+<h2>1. Clone the Repository</h2>
+<p>Open your terminal, go to your Odoo installation directory, and clone the <strong><code>V19.0-E</code></strong> branch:</p>
+<pre><code class="language-bash">cd ~/odoo19.0/odoo19
+git clone -b V19.0-E https://github.com/odoxsofthub/offy.git
+</code></pre>
+<p>To verify you are on the right branch:</p>
+<pre><code class="language-bash">cd offy
+git status
+</code></pre>
+<p><em>Output: <code>On branch V19.0-E</code></em></p>
+<hr />
+<h2>2. Adding the Module to Git &amp; Pushing to Server</h2>
+<p>To add the module to Git under your own custom branch and push it to the server, follow these steps:</p>
+<h3>1. Check changed files</h3>
+<pre><code class="language-bash">cd ~/odoo19/offy
+git status
+</code></pre>
+<h3>2. Stage your changes</h3>
+<pre><code class="language-bash">git add offy_mobile_connector_odoo/
+</code></pre>
+<h3>3. Commit your changes</h3>
+<pre><code class="language-bash">git commit -m &quot;[UPDT] offy module update&quot;
+</code></pre>
+<h3>4. Push to remote</h3>
+<pre><code class="language-bash">git push origin custom_branch
+</code></pre>
+<p><em>(Replace <code>custom_branch</code> with your active branch name)</em></p>
+<p>When prompted in the terminal:</p>
+<p><strong>1. Enter your GitHub username:</strong></p>
+<pre><code class="language-text">Username for 'https://github.com': your_username
+</code></pre>
+<p><strong>2. Enter your GitHub password:</strong></p>
+<pre><code class="language-text">Password for 'https://your_username@github.com': your_password
+</code></pre>
+<p>Your updates are now pushed to GitHub!</p>
+<hr />
+<h2>3. Directory Structure</h2>
+<p>Inside the cloned <code>offy</code> folder, you will see:</p>
+<pre><code class="language-text">offy/
+├── docs/                             # Documentation and images
+├── offy_mobile_app/                  # Flutter mobile app
+└── offy_mobile_connector_odoo/       # Odoo modules
+    ├── odx_mobile_api/               # REST API module
+    └── odx_mobile_connector/         # OFFY Connector module
+</code></pre>
+<div style="page-break-inside: avoid; border-left: 4px solid #0969da; background-color: #ddf4ff; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
+<strong style="color: #0969da;">Note:</strong> The folder you need to add to Odoo is <strong><code>offy_mobile_connector_odoo</code></strong> (because it directly contains the Odoo modules).
+</div>
+
+<hr />
+<h2>4. Update <code>odoo.conf</code></h2>
+<p>Open your <code>odoo.conf</code> file in your editor (such as PyCharm or VS Code).</p>
+<h3>A. Configure <code>addons_path</code></h3>
+<p>Add the path of <code>offy_mobile_connector_odoo</code> to your existing <code>addons_path</code> separated by a comma:</p>
+<pre><code class="language-ini">addons_path = /home/odx-11/odoo19.0/odoo19/addons,/home/odx-11/odoo19.0/odoo19/enterprise-19.0,/home/odx-11/odoo19.0/odoo19/offy/offy_mobile_connector_odoo
+</code></pre>
+<h4>If you have a project addons folder:</h4>
+<p>Simply add the path to the end of your list:</p>
+<pre><code class="language-ini">addons_path = /path/to/addons,/path/to/enterprise-19.0,/path/to/your_project_addons,/path/to/offy/offy_mobile_connector_odoo
+</code></pre>
+<p><em>(Alternatively, you can just copy the <code>odx_mobile_connector</code> and <code>odx_mobile_api</code> folders directly into your existing project addons folder).</em></p>
+<hr />
+<h3>B. Configure <code>dbfilter</code></h3>
+<p>Add or update the <code>dbfilter</code> line with your database name:</p>
+<pre><code class="language-ini">dbfilter = ^offy_enterprise$
+</code></pre>
+<ul>
+<li><strong>Why is this needed?</strong> It tells Odoo to automatically open your specific database so the mobile app connects smoothly without asking you to choose a database.</li>
+<li><strong>Your database name</strong>: Replace <code>offy_enterprise</code> with your actual database name (for example, <code>^my_company_db$</code>).</li>
+</ul>
+<hr />
+<h3>C. Example <code>odoo.conf</code></h3>
+<pre><code class="language-ini">[options]
+admin_passwd = 123
+db_host = localhost
+db_port = 5432
+db_user = odoo19
+db_password = 123
+http_port = 8019
+
+dbfilter = ^offy_enterprise$
+
+addons_path = /home/odx-11/odoo19.0/odoo19/addons,/home/odx-11/odoo19.0/odoo19/enterprise-19.0,/home/odx-11/odoo19.0/odoo19/offy/offy_mobile_connector_odoo
+</code></pre>
+<div style="page-break-inside: avoid; border-left: 4px solid #8250df; background-color: #fbefff; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
+<strong style="color: #8250df;">Important:</strong> <strong>Restart your Odoo server</strong> after saving <code>odoo.conf</code> so the changes take effect.
+</div>
+</body>
+</html>
